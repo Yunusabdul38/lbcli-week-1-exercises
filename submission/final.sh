@@ -78,7 +78,7 @@ echo "- SegWit digital safe: $SEGWIT_ADDR"
 echo "- Taproot quantum vault: $TAPROOT_ADDR"
 
 # This part is done for you - sending treasures to each address
-echo ""
+echo "" 
 echo "The treasure hunt begins! Coins are being sent to your addresses..."
 
 # Send treasure to each address using our helper function with fee handling
