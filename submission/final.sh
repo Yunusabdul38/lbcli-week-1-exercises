@@ -175,7 +175,13 @@ check_cmd "Getting address info"
 
 # STUDENT TASK: Extract the internal key (the x-only pubkey) from the descriptor
 # WRITE YOUR SOLUTION BELOW:
-INTERNAL_KEY=$(echo "$ADDR_INFO" | python3 -c "import sys,json; print(json.load(sys.stdin)['desc'])" | grep -oP '(?<=tr\()[^,)]+')
+INTERNAL_KEY=$(echo "$ADDR_INFO" | python3 -c "
+import sys, json, re
+info = json.load(sys.stdin)
+desc = info['desc']
+match = re.search(r'tr\((?:\[[^\]]+\])?([0-9a-fA-F]{64})', desc)
+print(match.group(1))
+")
 check_cmd "Extracting key from descriptor"
 INTERNAL_KEY=$(trim "$INTERNAL_KEY")
 
@@ -189,7 +195,7 @@ echo "Simple descriptor: $SIMPLE_DESCRIPTOR"
 # WRITE YOUR SOLUTION BELOW:
 SIMPLE_DESCRIPTOR="tr($INTERNAL_KEY)"
 check_cmd "Descriptor generation"
-TAPROOT_DESCRIPTOR=$(trim "$TAPROOT_DESCRIPTOR")
+TAPROOT_DESCRIPTOR=$(bitcoin-cli -regtest getdescriptorinfo "$SIMPLE_DESCRIPTOR" | python3 -c "import sys,json; print(json.load(sys.stdin)['descriptor'])")
 echo "Taproot treasure map: $TAPROOT_DESCRIPTOR"
 
 # STUDENT TASK: Derive an address from the descriptor
