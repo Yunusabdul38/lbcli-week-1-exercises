@@ -3,5 +3,5 @@
 # reason for 101 is because mining reword only become spendable after 100 block has been mine 
 # ontop of the first mine block
 ADDR=$(bitcoin-cli -regtest -rpcwallet=builderswallet getnewaddress)
-bitcoin-cli -regtest generatetoaddress 101 $ADDR
+bitcoin-cli -regtest generatetoaddress 101 $ADDR > /dev/null 2>&1
 bitcoin-cli  -regtest -rpcwallet=builderswallet getbalance
